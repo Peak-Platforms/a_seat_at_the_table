@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Seat at the Table | The Fans' Network</title>
+  <meta name="description" content="College sports has been sold. The fans who built it weren't invited. Until now." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Oswald:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --black:   #080806;
+      --cream:   #f2ebe0;
+      --red:     #b91c1c;
+      --red-bright: #dc2626;
+      --gold:    #c9a84c;
+      --muted:   #6b6459;
+      --rule:    rgba(201,168,76,0.35);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--cream);
+      font-family: 'Libre Baskerville', Georgia, serif;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* ─── NOISE TEXTURE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.6;
+    }
+
+    /* ─── MASTHEAD ─── */
+    .masthead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 2.5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .masthead-logo {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 300;
+      font-size: 0.75rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    .masthead-logo span {
+      color: var(--muted);
+    }
+
+    .masthead-tag {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 300;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 92vh;
+      display: grid;
+      grid-template-columns: 1fr;
+      align-items: center;
+      padding: 5rem 2.5rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-text {
+      position: absolute;
+      bottom: -0.15em;
+      right: -0.02em;
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(10rem, 25vw, 22rem);
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(201,168,76,0.07);
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .hero-inner {
+      max-width: 900px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 400;
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 2.5rem;
+      height: 1px;
+      background: var(--red);
+    }
+
+    .hero-headline {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(3.2rem, 9vw, 8rem);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.6rem;
+    }
+
+    .hero-headline em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-subhead {
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+      line-height: 1.65;
+      color: rgba(242,235,224,0.72);
+      max-width: 580px;
+      margin-bottom: 3rem;
+    }
+
+    .hero-divider {
+      width: 4rem;
+      height: 2px;
+      background: linear-gradient(to right, var(--gold), transparent);
+      margin-bottom: 3rem;
+    }
+
+    /* ─── MANIFESTO STRIP ─── */
+    .manifesto {
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      padding: 4rem 2.5rem;
+      background: rgba(201,168,76,0.03);
+    }
+
+    .manifesto-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .manifesto-item {
+      position: relative;
+      padding-left: 1.2rem;
+      border-left: 2px solid var(--red);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .manifesto-item.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    .manifesto-item:nth-child(2) { transition-delay: 0.15s; }
+    .manifesto-item:nth-child(3) { transition-delay: 0.3s; }
+
+    .manifesto-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: rgba(201,168,76,0.18);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .manifesto-title {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cream);
+      margin-bottom: 0.75rem;
+    }
+
+    .manifesto-body {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: rgba(242,235,224,0.6);
+    }
+
+    /* ─── FORM SECTION ─── */
+    .claim {
+      padding: 6rem 2.5rem;
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .claim-label {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 300;
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+
+    .claim-headline {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .claim-headline em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .claim-sub {
+      font-size: 0.95rem;
+      color: rgba(242,235,224,0.6);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ─── FORM ─── */
+    .form-wrap {
+      background: rgba(242,235,224,0.04);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      padding: 2.5rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .form-field label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .form-field input,
+    .form-field select {
+      background: rgba(242,235,224,0.06);
+      border: 1px solid rgba(201,168,76,0.2);
+      color: var(--cream);
+      font-family: 'Libre Baskerville', serif;
+      font-size: 0.9rem;
+      padding: 0.75rem 1rem;
+      border-radius: 1px;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .form-field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a84c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+
+    .form-field select option {
+      background: #1a1a18;
+      color: var(--cream);
+    }
+
+    .form-field input:focus,
+    .form-field select:focus {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.08);
+    }
+
+    .form-field input::placeholder {
+      color: rgba(242,235,224,0.25);
+    }
+
+    .form-full {
+      grid-column: 1 / -1;
+    }
+
+    .cta-btn {
+      width: 100%;
+      margin-top: 1.4rem;
+      padding: 1.1rem 2rem;
+      background: var(--red);
+      color: var(--cream);
+      border: none;
+      border-radius: 1px;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.08);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .cta-btn:hover { background: var(--red-bright); }
+    .cta-btn:hover::after { opacity: 1; }
+    .cta-btn:active { transform: scale(0.99); }
+    .cta-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .form-fine {
+      margin-top: 1rem;
+      font-size: 0.7rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ─── SUCCESS STATE ─── */
+    .success-wrap {
+      display: none;
+      text-align: center;
+      padding: 2rem 0;
+    }
+
+    .success-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .success-hed {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .success-hed em { color: var(--gold); font-style: italic; }
+
+    .success-sub {
+      font-size: 0.9rem;
+      color: rgba(242,235,224,0.6);
+      line-height: 1.7;
+    }
+
+    /* ─── STATUS MESSAGE ─── */
+    .status-msg {
+      margin-top: 0.75rem;
+      font-size: 0.8rem;
+      min-height: 1.2em;
+      color: var(--red-bright);
+      font-family: 'Oswald', sans-serif;
+      letter-spacing: 0.05em;
+    }
+
+    .status-msg.ok { color: #4ade80; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 2rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-brand {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 300;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-links a {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 300;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--gold); }
+
+    /* ─── SCROLL ANIMATIONS ─── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 700px) {
+      .hero { padding: 4rem 1.5rem 3rem; }
+      .manifesto { padding: 3rem 1.5rem; }
+      .manifesto-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .claim { padding: 4rem 1.5rem; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { flex-direction: column; align-items: flex-start; }
+      .masthead { padding: 1.2rem 1.5rem; }
+    }
+
+    /* ─── HERO ANIMATION ─── */
+    .hero-eyebrow { animation: slideUp 0.6s 0.1s both ease-out; }
+    .hero-headline { animation: slideUp 0.7s 0.25s both ease-out; }
+    .hero-subhead  { animation: slideUp 0.7s 0.4s both ease-out; }
+    .hero-divider  { animation: slideUp 0.6s 0.55s both ease-out; }
+    .hero-cta      { animation: slideUp 0.6s 0.65s both ease-out; }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <a href="https://thefansnetwork.fun" class="masthead-logo">
+      The Fans' Network <span>/ A Seat at the Table</span>
+    </a>
+    <span class="masthead-tag">Fan Association Initiative</span>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg-text" aria-hidden="true">TABLE</div>
+    <div class="hero-inner">
+      <p class="hero-eyebrow">College Sports Has Been Sold</p>
+      <h1 class="hero-headline">
+        The fans who<br />
+        built it weren't<br />
+        <em>invited.</em>
+      </h1>
+      <p class="hero-subhead">
+        Conference realignment. Private equity buyouts. NIL money flowing
+        through back channels. Every major decision in college sports has been
+        made without the people who fill the stadiums, fund the programs,
+        and bleed their school's colors for life.
+      </p>
+      <div class="hero-divider"></div>
+      <p class="hero-subhead" style="margin-bottom:0">
+        <strong style="color:var(--cream)">The Fans' Network is changing that.</strong>
+        Your school. Your voice. Your seat.
+      </p>
+    </div>
+  </section>
+
+  <!-- MANIFESTO STRIP -->
+  <section class="manifesto">
+    <div class="manifesto-grid">
+      <div class="manifesto-item">
+        <div class="manifesto-number">01</div>
+        <div class="manifesto-title">The Table Was Set Without You</div>
+        <p class="manifesto-body">
+          PE firms are acquiring multimedia rights to your school's athletics.
+          Conference commissioners cut nine-figure TV deals. You were never
+          consulted. You never had a vote. You never got a chair.
+        </p>
+      </div>
+      <div class="manifesto-item">
+        <div class="manifesto-number">02</div>
+        <div class="manifesto-title">Fan Associations Change the Math</div>
+        <p class="manifesto-body">
+          Organized, funded fan associations represent real leverage — in NIL
+          collectives, in media negotiations, in the conversation with athletic
+          departments about what fans actually want from their program.
+        </p>
+      </div>
+      <div class="manifesto-item">
+        <div class="manifesto-number">03</div>
+        <div class="manifesto-title">This Is the First Step</div>
+        <p class="manifesto-body">
+          Claim your founding membership now. We're building school-by-school,
+          fan-by-fan. Early members shape how their association is built —
+          and what it fights for.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLAIM FORM -->
+  <section class="claim">
+    <p class="claim-label">Founding Membership</p>
+    <h2 class="claim-headline fade-in">
+      Claim Your<br /><em>Seat at the Table</em>
+    </h2>
+    <p class="claim-sub fade-in">
+      No cost. No obligation. Just your name, your school, and your place
+      in the founding cohort of The Fans' Network.
+    </p>
+
+    <div class="form-wrap fade-in" id="formWrap">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" placeholder="Boomer" autocomplete="given-name" />
+        </div>
+        <div class="form-field">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" placeholder="Sooner" autocomplete="family-name" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field form-full">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="you@example.com" autocomplete="email" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field form-full">
+          <label for="school">Your School</label>
+          <select id="school">
+            <option value="">— Select your school —</option>
+            <optgroup label="Live Now">
+              <option value="oklahoma">University of Oklahoma</option>
+              <option value="okstate">Oklahoma State University</option>
+              <option value="texas">University of Texas</option>
+            </optgroup>
+            <optgroup label="Coming Soon — SEC">
+              <option value="alabama">Alabama</option>
+              <option value="georgia">Georgia</option>
+              <option value="lsu">LSU</option>
+              <option value="tennessee">Tennessee</option>
+              <option value="auburn">Auburn</option>
+              <option value="florida">Florida</option>
+              <option value="arkansas">Arkansas</option>
+              <option value="mississippi-state">Mississippi State</option>
+              <option value="ole-miss">Ole Miss</option>
+              <option value="south-carolina">South Carolina</option>
+              <option value="vanderbilt">Vanderbilt</option>
+              <option value="kentucky">Kentucky</option>
+              <option value="missouri">Missouri</option>
+              <option value="texas-am">Texas A&M</option>
+            </optgroup>
+            <optgroup label="Coming Soon — Big Ten">
+              <option value="michigan">Michigan</option>
+              <option value="ohio-state">Ohio State</option>
+              <option value="penn-state">Penn State</option>
+              <option value="michigan-state">Michigan State</option>
+              <option value="iowa">Iowa</option>
+              <option value="nebraska">Nebraska</option>
+              <option value="wisconsin">Wisconsin</option>
+              <option value="illinois">Illinois</option>
+              <option value="indiana">Indiana</option>
+              <option value="minnesota">Minnesota</option>
+              <option value="northwestern">Northwestern</option>
+              <option value="purdue">Purdue</option>
+              <option value="rutgers">Rutgers</option>
+              <option value="maryland">Maryland</option>
+              <option value="usc">USC</option>
+              <option value="ucla">UCLA</option>
+              <option value="oregon">Oregon</option>
+              <option value="washington">Washington</option>
+            </optgroup>
+            <optgroup label="Coming Soon — Big 12">
+              <option value="baylor">Baylor</option>
+              <option value="tcu">TCU</option>
+              <option value="kansas">Kansas</option>
+              <option value="kansas-state">Kansas State</option>
+              <option value="iowa-state">Iowa State</option>
+              <option value="west-virginia">West Virginia</option>
+              <option value="cincinnati">Cincinnati</option>
+              <option value="houston">Houston</option>
+              <option value="ucf">UCF</option>
+              <option value="byu">BYU</option>
+              <option value="arizona">Arizona</option>
+              <option value="arizona-state">Arizona State</option>
+              <option value="colorado">Colorado</option>
+              <option value="utah">Utah</option>
+            </optgroup>
+            <optgroup label="Coming Soon — ACC">
+              <option value="clemson">Clemson</option>
+              <option value="florida-state">Florida State</option>
+              <option value="miami">Miami</option>
+              <option value="north-carolina">North Carolina</option>
+              <option value="nc-state">NC State</option>
+              <option value="duke">Duke</option>
+              <option value="wake-forest">Wake Forest</option>
+              <option value="virginia">Virginia</option>
+              <option value="virginia-tech">Virginia Tech</option>
+              <option value="georgia-tech">Georgia Tech</option>
+              <option value="pitt">Pitt</option>
+              <option value="louisville">Louisville</option>
+              <option value="boston-college">Boston College</option>
+              <option value="syracuse">Syracuse</option>
+              <option value="notre-dame">Notre Dame</option>
+              <option value="stanford">Stanford</option>
+              <option value="cal">California</option>
+              <option value="smu">SMU</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+
+      <button class="cta-btn" id="submitBtn" onclick="handleSubmit()">
+        Claim My Seat
+      </button>
+      <div class="status-msg" id="statusMsg"></div>
+
+      <p class="form-fine">
+        By joining, you agree to receive updates from The Fans' Network about
+        your school's fan association. No spam. No selling your data.
+        You can unsubscribe at any time.
+      </p>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-wrap" id="successWrap">
+      <div class="success-icon">🏟️</div>
+      <h3 class="success-hed">You're <em>in.</em></h3>
+      <p class="success-sub">
+        Your seat is reserved. We'll be in touch with next steps for your
+        school's fan association — and how founding members will help shape
+        what it stands for.<br /><br />
+        Welcome to the table.
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-brand">
+      A Seat at the Table &mdash; A Fans' Network Initiative &mdash; &copy; 2025 Peak Financial Group LLC
+    </span>
+    <nav class="footer-links">
+      <a href="https://thefansnetwork.fun">The Fans' Network</a>
+      <a href="https://xsen.fun">XSEN</a>
+    </nav>
+  </footer>
+
+  <script>
+    // ─── CONFIG ───────────────────────────────────────────────
+    const SUPABASE_URL  = 'https://hvqzrdlbtfezwuveincs.supabase.co';
+    const SUPABASE_ANON = 'YOUR_SUPABASE_ANON_KEY';
+    const SOURCE        = 'aseatatthetable';
+    // ─────────────────────────────────────────────────────────
+
+    // Pre-fill school from URL param (?school=oklahoma)
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const school = params.get('school');
+      if (school) {
+        const sel = document.getElementById('school');
+        for (let opt of sel.options) {
+          if (opt.value === school) { sel.value = school; break; }
+        }
+      }
+    })();
+
+    // ─── INTERSECTION OBSERVER for scroll animations ───────────
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.fade-in, .manifesto-item').forEach(el => observer.observe(el));
+
+    // ─── FORM SUBMIT ──────────────────────────────────────────
+    async function handleSubmit() {
+      const btn    = document.getElementById('submitBtn');
+      const status = document.getElementById('statusMsg');
+
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName  = document.getElementById('lastName').value.trim();
+      const email     = document.getElementById('email').value.trim();
+      const school    = document.getElementById('school').value;
+
+      // Validate
+      if (!firstName || !lastName) {
+        showStatus('Please enter your first and last name.', false);
+        return;
+      }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showStatus('Please enter a valid email address.', false);
+        return;
+      }
+      if (!school) {
+        showStatus('Please select your school.', false);
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Claiming your seat…';
+      status.textContent = '';
+
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/xsen_leads`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON,
+            'Authorization': `Bearer ${SUPABASE_ANON}`,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            first_name: firstName,
+            last_name:  lastName,
+            email:      email,
+            school:     school,
+            source:     SOURCE,
+            created_at: new Date().toISOString()
+          })
+        });
+
+        if (res.ok || res.status === 201) {
+          showSuccess();
+        } else {
+          const err = await res.json().catch(() => ({}));
+          // Handle duplicate email gracefully
+          if (err?.code === '23505') {
+            showSuccess(); // Already signed up — still show success
+          } else {
+            throw new Error(err?.message || 'Submission failed');
+          }
+        }
+      } catch (err) {
+        console.error(err);
+        showStatus('Something went wrong. Please try again or email us directly.', false);
+        btn.disabled = false;
+        btn.textContent = 'Claim My Seat';
+      }
+    }
+
+    function showStatus(msg, ok) {
+      const el = document.getElementById('statusMsg');
+      el.textContent = msg;
+      el.className = 'status-msg' + (ok ? ' ok' : '');
+    }
+
+    function showSuccess() {
+      document.getElementById('formWrap').style.display    = 'none';
+      document.getElementById('successWrap').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
