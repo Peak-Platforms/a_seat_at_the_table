@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Seat at the Table | The Fans' Network</title>
+  <meta name="description" content="College sports has been sold. The fans who built it weren't invited. Until now." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Oswald:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black:      #080806;
+      --cream:      #f2ebe0;
+      --red:        #b91c1c;
+      --red-bright: #dc2626;
+      --gold:       #c9a84c;
+      --muted:      #6b6459;
+      --rule:       rgba(201,168,76,0.3);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--cream);
+      font-family: 'Libre Baskerville', Georgia, serif;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.6;
+    }
+    .masthead { display: flex; align-items: center; justify-content: space-between; padding: 1.4rem 2.5rem; border-bottom: 1px solid var(--rule); }
+    .masthead-logo { font-family: 'Oswald', sans-serif; font-weight: 300; font-size: 0.75rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); text-decoration: none; }
+    .masthead-logo span { color: var(--muted); }
+    .masthead-tag { font-family: 'Oswald', sans-serif; font-weight: 300; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+    .hero { min-height: 88vh; display: grid; align-items: center; padding: 5rem 2.5rem 4rem; position: relative; overflow: hidden; }
+    .hero-bg-text { position: absolute; bottom: -0.1em; right: -0.02em; font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(10rem, 25vw, 22rem); line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(201,168,76,0.06); pointer-events: none; user-select: none; white-space: nowrap; }
+    .hero-inner { max-width: 860px; position: relative; z-index: 2; }
+    .hero-eyebrow { font-family: 'Oswald', sans-serif; font-weight: 400; font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--red); margin-bottom: 1.8rem; display: flex; align-items: center; gap: 1rem; animation: slideUp 0.6s 0.1s both ease-out; }
+    .hero-eyebrow::before { content: ''; display: inline-block; width: 2.5rem; height: 1px; background: var(--red); }
+    .hero-headline { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(3.2rem, 9vw, 7.5rem); line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 2rem; animation: slideUp 0.7s 0.25s both ease-out; }
+    .hero-headline em { font-style: italic; color: var(--gold); }
+    .hero-subhead { font-size: clamp(1rem, 1.8vw, 1.15rem); line-height: 1.75; color: rgba(242,235,224,0.72); max-width: 600px; margin-bottom: 1.5rem; animation: slideUp 0.7s 0.4s both ease-out; }
+    .hero-subhead strong { color: var(--cream); }
+    .facts { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 4rem 2.5rem; }
+    .facts-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3rem; }
+    .fact { padding-left: 1.2rem; border-left: 2px solid var(--red); opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fact.visible { opacity: 1; transform: none; }
+    .fact:nth-child(2) { transition-delay: 0.15s; }
+    .fact:nth-child(3) { transition-delay: 0.3s; }
+    .fact-num { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: rgba(201,168,76,0.15); line-height: 1; margin-bottom: 0.5rem; }
+    .fact-title { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream); margin-bottom: 0.75rem; }
+    .fact-body { font-size: 0.88rem; line-height: 1.75; color: rgba(242,235,224,0.58); }
+    .teaser { padding: 5rem 2.5rem; max-width: 780px; margin: 0 auto; text-align: center; }
+    .teaser-label { font-family: 'Oswald', sans-serif; font-weight: 300; font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; }
+    .teaser-headline { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.15; margin-bottom: 1.2rem; }
+    .teaser-headline em { font-style: italic; color: var(--gold); }
+    .teaser-body { font-size: 0.95rem; line-height: 1.8; color: rgba(242,235,224,0.65); margin-bottom: 0; }
+    .teaser-body strong { color: var(--cream); }
+    .claim { padding: 2rem 2.5rem 6rem; max-width: 660px; margin: 0 auto; }
+    .form-wrap { background: rgba(242,235,224,0.04); border: 1px solid var(--rule); border-radius: 2px; padding: 2.5rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .form-field { display: flex; flex-direction: column; gap: 0.45rem; }
+    .form-field label { font-family: 'Oswald', sans-serif; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+    .form-field input, .form-field select { background: rgba(242,235,224,0.06); border: 1px solid rgba(201,168,76,0.2); color: var(--cream); font-family: 'Libre Baskerville', serif; font-size: 0.9rem; padding: 0.75rem 1rem; border-radius: 1px; outline: none; transition: border-color 0.2s, background 0.2s; appearance: none; -webkit-appearance: none; }
+    .form-field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a84c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; cursor: pointer; }
+    .form-field select option { background: #1a1a18; color: var(--cream); }
+    .form-field input:focus, .form-field select:focus { border-color: var(--gold); background: rgba(201,168,76,0.07); }
+    .form-field input::placeholder { color: rgba(242,235,224,0.22); }
+    .form-full { grid-column: 1 / -1; }
+    .cta-btn { width: 100%; margin-top: 1.4rem; padding: 1.1rem 2rem; background: var(--red); color: var(--cream); border: none; border-radius: 1px; font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.85rem; letter-spacing: 0.25em; text-transform: uppercase; cursor: pointer; transition: background 0.2s, transform 0.1s; }
+    .cta-btn:hover { background: var(--red-bright); }
+    .cta-btn:active { transform: scale(0.99); }
+    .cta-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .form-fine { margin-top: 1rem; font-size: 0.7rem; color: var(--muted); line-height: 1.6; text-align: center; }
+    .status-msg { margin-top: 0.75rem; font-size: 0.8rem; min-height: 1.2em; color: var(--red-bright); font-family: 'Oswald', sans-serif; letter-spacing: 0.05em; text-align: center; }
+    .status-msg.ok { color: #4ade80; }
+    .success-wrap { display: none; text-align: center; padding: 2rem 0; }
+    .success-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .success-hed { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .success-hed em { color: var(--gold); font-style: italic; }
+    .success-sub { font-size: 0.9rem; color: rgba(242,235,224,0.6); line-height: 1.8; }
+    footer { border-top: 1px solid var(--rule); padding: 2rem 2.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-brand { font-family: 'Oswald', sans-serif; font-weight: 300; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-family: 'Oswald', sans-serif; font-weight: 300; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--gold); }
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-in.visible { opacity: 1; transform: none; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+    @media (max-width: 700px) {
+      .hero { padding: 4rem 1.5rem 3rem; }
+      .facts { padding: 3rem 1.5rem; }
+      .facts-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .teaser { padding: 4rem 1.5rem 2rem; }
+      .claim { padding: 2rem 1.5rem 4rem; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { flex-direction: column; align-items: flex-start; }
+      .masthead { padding: 1.2rem 1.5rem; }
+    }
+    .video-section { padding: 5rem 2.5rem 2rem; max-width: 780px; margin: 0 auto; }
+    .video-label { font-family: 'Oswald', sans-serif; font-weight: 300; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; text-align: center; }
+    .video-wrap { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #0d0d0b; border: 1px solid var(--rule); border-radius: 2px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+    .video-thumbnail { display: flex; align-items: center; gap: 3rem; padding: 2rem 3rem; width: 100%; }
+    .video-portrait { flex-shrink: 0; width: 140px; height: 140px; border-radius: 50%; border: 2px solid rgba(201,168,76,0.5); overflow: hidden; box-shadow: 0 0 0 6px rgba(201,168,76,0.07); }
+    .video-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: center center; }
+    .video-info { flex: 1; text-align: left; }
+    .video-info-eyebrow { font-family: 'Oswald', sans-serif; font-weight: 300; font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .video-info-name { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.6rem; color: var(--cream); line-height: 1.1; margin-bottom: 0.4rem; }
+    .video-info-title { font-family: 'Libre Baskerville', serif; font-size: 0.82rem; color: rgba(242,235,224,0.5); line-height: 1.6; margin-bottom: 1.25rem; }
+    .video-play-badge { display: inline-flex; align-items: center; gap: 0.65rem; padding: 0.6rem 1.2rem; border: 1px solid rgba(201,168,76,0.4); border-radius: 1px; }
+    .video-play-badge svg { width: 0.9rem; height: 0.9rem; fill: var(--gold); margin-left: 0.1rem; flex-shrink: 0; }
+    .video-play-badge span { font-family: 'Oswald', sans-serif; font-weight: 400; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(242,235,224,0.65); }
+    .video-caption { margin-top: 1rem; text-align: center; font-size: 0.82rem; color: rgba(242,235,224,0.45); font-style: italic; line-height: 1.6; }
+    @media (max-width: 700px) {
+      .video-section { padding: 4rem 1.5rem 1rem; }
+      .video-thumbnail { flex-direction: column; gap: 1.5rem; padding: 2rem; text-align: center; }
+      .video-info { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="masthead">
+    <a href="https://thefansnetwork.fun" class="masthead-logo">
+      The Fans' Network <span>/ A Seat at the Table</span>
+    </a>
+    <span class="masthead-tag">Fan Initiative</span>
+  </header>
+
+  <section class="hero">
+    <div class="hero-bg-text" aria-hidden="true">TABLE</div>
+    <div class="hero-inner">
+      <p class="hero-eyebrow">College Sports Is Being Sold</p>
+      <h1 class="hero-headline">
+        The fans who<br />
+        built it weren't<br />
+        <em>invited.</em>
+      </h1>
+      <p class="hero-subhead">
+        Conference realignment. Private equity buyouts. Every major 
+        decision in college sports is being made without the people 
+        who fill the stadiums, fund the programs, and bleed their 
+        school's colors for life.
+      </p>
+      <p class="hero-subhead">
+        And when money drives the decisions, football and basketball 
+        get protected. Wrestling gets cut. Swimming gets cut. Gymnastics 
+        gets cut. <strong>The fans of those programs — some of the most 
+        passionate people in college athletics — have the least voice of anyone.</strong>
+      </p>
+      <p class="hero-subhead">
+        <strong>The Fans' Network is changing that.</strong> 
+        Every fan. Every sport. Every school.
+        Claim your seat and we'll show you exactly how.
+      </p>
+    </div>
+  </section>
+
+  <section class="facts">
+    <div class="facts-grid">
+      <div class="fact">
+        <div class="fact-num">01</div>
+        <div class="fact-title">The Rooms You Were Never In</div>
+        <p class="fact-body">
+          PE-backed companies now control multimedia rights at hundreds of 
+          programs. Conference commissioners signed billion-dollar TV deals. 
+          You found out when everyone else did — when it was already done.
+        </p>
+      </div>
+      <div class="fact">
+        <div class="fact-num">02</div>
+        <div class="fact-title">Olympic Sports Pay the Price</div>
+        <p class="fact-body">
+          When money drives decisions, revenue sports get protected and 
+          everything else gets reviewed on a spreadsheet. Wrestling. Swimming. 
+          Gymnastics. Women's soccer. The fans of those programs are the most 
+          overlooked people in college athletics.
+        </p>
+      </div>
+      <div class="fact">
+        <div class="fact-num">03</div>
+        <div class="fact-title">Organized Fans Change the Math</div>
+        <p class="fact-body">
+          Individual fans — no matter how loud — don't move the needle. 
+          Organized fans across every sport, unified under one school, 
+          are a constituency. That's what we're building, school by school.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOUNDER VIDEO -->
+  <!-- TO ACTIVATE: replace null below with your YouTube video ID string -->
+  <!-- Example: const FOUNDER_VIDEO_ID = 'abc123xyz'; -->
+  <section class="video-section fade-in">
+    <p class="video-label">A Word from the Founder</p>
+    <div class="video-wrap" id="videoWrap">
+      <div class="video-thumbnail">
+        <div class="video-portrait">
+          <img src="data:image/png;base64,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" alt="Kevin Whitaker — Founder" />
+        </div>
+        <div class="video-info">
+          <p class="video-info-eyebrow">A Word from the Founder</p>
+          <h3 class="video-info-name">Kevin Whitaker</h3>
+          <p class="video-info-title">Founder &middot; Lifelong OU fan &middot; The person behind The Fans' Network</p>
+          <div class="video-play-badge">
+            <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            <span>Coming Soon</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="video-caption">
+      Kevin explains why he built this and what he needs from you.
+    </p>
+  </section>
+
+  <section class="teaser">
+    <p class="teaser-label">What Happens After You Sign Up</p>
+    <h2 class="teaser-headline">
+      We'll walk you through<br /><em>exactly how this works.</em>
+    </h2>
+    <p class="teaser-body">
+      After you claim your seat, we'll send you a full breakdown of the plan — 
+      what we're building, how your school's group gets organized, 
+      and what role founding members play. <strong>No pitch. No ask. 
+      Just the full picture so you can decide if you're in.</strong>
+    </p>
+    <p class="teaser-body" style="margin-top:1.2rem;">
+      Curious now? <a href="/flow.html" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px;">Here's the plan &rarr;</a>
+    </p>
+  </section>
+
+  <section class="claim">
+    <div class="form-wrap fade-in" id="formWrap">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" placeholder="Boomer" autocomplete="given-name" />
+        </div>
+        <div class="form-field">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" placeholder="Sooner" autocomplete="family-name" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field form-full">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="you@example.com" autocomplete="email" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field form-full">
+          <label for="school">Your School</label>
+          <select id="school">
+            <option value="">— Select your school —</option>
+            <optgroup label="Live Now">
+              <option value="oklahoma">University of Oklahoma</option>
+              <option value="okstate">Oklahoma State University</option>
+              <option value="texas">University of Texas</option>
+            </optgroup>
+            <optgroup label="Coming Soon — SEC">
+              <option value="alabama">Alabama</option>
+              <option value="georgia">Georgia</option>
+              <option value="lsu">LSU</option>
+              <option value="tennessee">Tennessee</option>
+              <option value="auburn">Auburn</option>
+              <option value="florida">Florida</option>
+              <option value="arkansas">Arkansas</option>
+              <option value="mississippi-state">Mississippi State</option>
+              <option value="ole-miss">Ole Miss</option>
+              <option value="south-carolina">South Carolina</option>
+              <option value="vanderbilt">Vanderbilt</option>
+              <option value="kentucky">Kentucky</option>
+              <option value="missouri">Missouri</option>
+              <option value="texas-am">Texas A&amp;M</option>
+            </optgroup>
+            <optgroup label="Coming Soon — Big Ten">
+              <option value="michigan">Michigan</option>
+              <option value="ohio-state">Ohio State</option>
+              <option value="penn-state">Penn State</option>
+              <option value="michigan-state">Michigan State</option>
+              <option value="iowa">Iowa</option>
+              <option value="nebraska">Nebraska</option>
+              <option value="wisconsin">Wisconsin</option>
+              <option value="illinois">Illinois</option>
+              <option value="indiana">Indiana</option>
+              <option value="minnesota">Minnesota</option>
+              <option value="northwestern">Northwestern</option>
+              <option value="purdue">Purdue</option>
+              <option value="rutgers">Rutgers</option>
+              <option value="maryland">Maryland</option>
+              <option value="usc">USC</option>
+              <option value="ucla">UCLA</option>
+              <option value="oregon">Oregon</option>
+              <option value="washington">Washington</option>
+            </optgroup>
+            <optgroup label="Coming Soon — Big 12">
+              <option value="baylor">Baylor</option>
+              <option value="tcu">TCU</option>
+              <option value="kansas">Kansas</option>
+              <option value="kansas-state">Kansas State</option>
+              <option value="iowa-state">Iowa State</option>
+              <option value="west-virginia">West Virginia</option>
+              <option value="cincinnati">Cincinnati</option>
+              <option value="houston">Houston</option>
+              <option value="ucf">UCF</option>
+              <option value="byu">BYU</option>
+              <option value="arizona">Arizona</option>
+              <option value="arizona-state">Arizona State</option>
+              <option value="colorado">Colorado</option>
+              <option value="utah">Utah</option>
+            </optgroup>
+            <optgroup label="Coming Soon — ACC">
+              <option value="clemson">Clemson</option>
+              <option value="florida-state">Florida State</option>
+              <option value="miami">Miami</option>
+              <option value="north-carolina">North Carolina</option>
+              <option value="nc-state">NC State</option>
+              <option value="duke">Duke</option>
+              <option value="wake-forest">Wake Forest</option>
+              <option value="virginia">Virginia</option>
+              <option value="virginia-tech">Virginia Tech</option>
+              <option value="georgia-tech">Georgia Tech</option>
+              <option value="pitt">Pitt</option>
+              <option value="louisville">Louisville</option>
+              <option value="boston-college">Boston College</option>
+              <option value="syracuse">Syracuse</option>
+              <option value="notre-dame">Notre Dame</option>
+              <option value="stanford">Stanford</option>
+              <option value="cal">California</option>
+              <option value="smu">SMU</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+      <button class="cta-btn" id="submitBtn" onclick="handleSubmit()">
+        Claim My Seat
+      </button>
+      <div class="status-msg" id="statusMsg"></div>
+      <p class="form-fine">No cost. No spam. Just the full picture — sent to your inbox.</p>
+    </div>
+
+    <div class="success-wrap" id="successWrap">
+      <div class="success-icon">&#127967;</div>
+      <h3 class="success-hed">Your seat is <em>reserved.</em></h3>
+      <p class="success-sub">
+        Check your inbox — we just sent you the full breakdown of what 
+        we're building and how founding members help shape it.<br /><br />
+        Welcome to the table.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <span class="footer-brand">
+      A Seat at the Table &mdash; A Fans' Network Initiative &mdash; &copy; 2026 Peak Financial Group LLC
+    </span>
+    <nav class="footer-links">
+      <a href="https://thefansnetwork.fun">The Fans' Network</a>
+      <a href="https://xsen.fun">XSEN</a>
+    </nav>
+  </footer>
+
+  <script>
+    // ── FOUNDER VIDEO ──────────────────────────────────────────────
+    // When you have your YouTube video ID, replace null with the ID string
+    // Example: const FOUNDER_VIDEO_ID = 'abc123xyz';
+    const FOUNDER_VIDEO_ID = null;
+
+    if (FOUNDER_VIDEO_ID) {
+      const videoWrap = document.getElementById('videoWrap');
+      videoWrap.innerHTML = '';
+      videoWrap.style.cssText = 'position:relative;aspect-ratio:16/9;';
+      const iframe = document.createElement('iframe');
+      iframe.src = 'https://player.xsen.fun/?v=' + FOUNDER_VIDEO_ID;
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      iframe.allowFullscreen = true;
+      iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:none;';
+      videoWrap.appendChild(iframe);
+    }
+    // ──────────────────────────────────────────────────────────────
+
+    const SUPABASE_URL  = 'https://hvqzrdlbtfezwuveincs.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2cXpyZGxidGZlend1dmVpbmNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyOTA1MTgsImV4cCI6MjA3ODg2NjUxOH0.30_fdpT1hu_m3zyf-8IywXWIozjIDnqv5RHs6T9hCTo';
+    const SOURCE = 'aseatatthetable';
+
+    (function() {
+      const s = new URLSearchParams(window.location.search).get('school');
+      if (s) {
+        const sel = document.getElementById('school');
+        for (let o of sel.options) { if (o.value === s) { sel.value = s; break; } }
+      }
+    })();
+
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.fade-in, .fact').forEach(el => obs.observe(el));
+
+    async function handleSubmit() {
+      const btn    = document.getElementById('submitBtn');
+      const status = document.getElementById('statusMsg');
+      const first  = document.getElementById('firstName').value.trim();
+      const last   = document.getElementById('lastName').value.trim();
+      const email  = document.getElementById('email').value.trim();
+      const school = document.getElementById('school').value;
+
+      if (!first || !last)  { showStatus('Please enter your first and last name.'); return; }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showStatus('Please enter a valid email address.'); return; }
+      if (!school) { showStatus('Please select your school.'); return; }
+
+      btn.disabled = true;
+      btn.textContent = 'Claiming your seat…';
+      status.textContent = '';
+
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/xsen_leads`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON,
+            'Authorization': `Bearer ${SUPABASE_ANON}`,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            first_name: first,
+            last_name:  last,
+            email,
+            school,
+            source: SOURCE,
+            created_at: new Date().toISOString()
+          })
+        });
+
+        if (res.ok || res.status === 201) {
+          showSuccess();
+        } else {
+          const err = await res.json().catch(() => ({}));
+          if (err?.code === '23505') { showSuccess(); }
+          else { throw new Error(err?.message || 'Submission failed'); }
+        }
+      } catch (err) {
+        console.error(err);
+        showStatus('Something went wrong. Please try again.');
+        btn.disabled = false;
+        btn.textContent = 'Claim My Seat';
+      }
+    }
+
+    function showStatus(msg) {
+      const el = document.getElementById('statusMsg');
+      el.textContent = msg;
+      el.className = 'status-msg';
+    }
+    function showSuccess() {
+      document.getElementById('formWrap').style.display = 'none';
+      document.getElementById('successWrap').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
