@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Here's the Plan | The Fans' Network</title>
+  <meta name="description" content="What we're building, how it works, and what founding members do." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Oswald:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black:  #080806;
+      --cream:  #f2ebe0;
+      --red:    #b91c1c;
+      --gold:   #c9a84c;
+      --muted:  #6b6459;
+      --rule:   rgba(201,168,76,0.28);
+      --card:   rgba(242,235,224,0.04);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--cream);
+      font-family: 'Libre Baskerville', Georgia, serif;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.55;
+    }
+
+    /* ── MASTHEAD ── */
+    .masthead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 2.5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .masthead-logo {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 300;
+      font-size: 0.75rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .masthead-logo span { color: var(--muted); }
+
+    /* ── INTRO ── */
+    .intro {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 5rem 2.5rem 3rem;
+    }
+    .intro-label {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 300;
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .intro-label::before {
+      content: '';
+      display: inline-block;
+      width: 2rem;
+      height: 1px;
+      background: var(--gold);
+    }
+    .intro-headline {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+      animation: slideUp 0.7s 0.1s both ease-out;
+    }
+    .intro-headline em { font-style: italic; color: var(--gold); }
+    .intro-body {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: rgba(242,235,224,0.75);
+      margin-bottom: 1.2rem;
+      animation: slideUp 0.7s 0.25s both ease-out;
+    }
+    .intro-body strong { color: var(--cream); }
+
+    /* ── DIVIDER ── */
+    .section-rule {
+      border: none;
+      border-top: 1px solid var(--rule);
+      margin: 0;
+    }
+
+    /* ── FLOW STEPS ── */
+    .flow {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 5rem 2.5rem;
+    }
+    .flow-label {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 300;
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 3.5rem;
+    }
+    .step {
+      display: grid;
+      grid-template-columns: 5rem 1fr;
+      gap: 2rem;
+      margin-bottom: 0;
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .step.visible { opacity: 1; transform: none; }
+    .step:nth-child(2) { transition-delay: 0.1s; }
+    .step:nth-child(3) { transition-delay: 0.2s; }
+    .step:nth-child(4) { transition-delay: 0.3s; }
+    .step:nth-child(5) { transition-delay: 0.4s; }
+
+    /* connector line between steps */
+    .step:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 2.4rem;
+      top: 4rem;
+      bottom: -3rem;
+      width: 1px;
+      background: linear-gradient(to bottom, rgba(201,168,76,0.3), rgba(201,168,76,0.05));
+    }
+
+    .step + .step { margin-top: 3rem; }
+
+    .step-num-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 0.2rem;
+    }
+    .step-circle {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+    .step-content { padding-bottom: 0.5rem; }
+    .step-tag {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 300;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.5rem;
+    }
+    .step-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+      line-height: 1.15;
+      margin-bottom: 0.9rem;
+    }
+    .step-body {
+      font-size: 0.9rem;
+      line-height: 1.85;
+      color: rgba(242,235,224,0.65);
+    }
+    .step-body strong { color: var(--cream); }
+    .step-body p + p { margin-top: 0.8rem; }
+
+    /* ── WHAT WE NEED FROM YOU ── */
+    .buyin {
+      background: rgba(201,168,76,0.04);
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      padding: 5rem 2.5rem;
+    }
+    .buyin-inner {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .buyin-label {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 300;
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+    .buyin-headline {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .buyin-headline em { font-style: italic; color: var(--gold); }
+    .buyin-body {
+      font-size: 0.95rem;
+      line-height: 1.85;
+      color: rgba(242,235,224,0.7);
+      margin-bottom: 1.2rem;
+    }
+    .buyin-body strong { color: var(--cream); }
+
+    .questions {
+      margin: 2.5rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .question {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.2rem 1.4rem;
+      background: rgba(242,235,224,0.04);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+    }
+    .q-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .q-text {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: rgba(242,235,224,0.75);
+      font-style: italic;
+    }
+
+    .reply-btn {
+      display: inline-block;
+      padding: 1rem 2.2rem;
+      background: var(--red);
+      color: var(--cream);
+      border: none;
+      border-radius: 1px;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 500;
+      font-size: 0.82rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-right: 1rem;
+      margin-top: 0.5rem;
+    }
+    .reply-btn:hover { background: #dc2626; }
+
+    .secondary-btn {
+      display: inline-block;
+      padding: 1rem 2.2rem;
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,0.4);
+      border-radius: 1px;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 400;
+      font-size: 0.82rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      margin-top: 0.5rem;
+    }
+    .secondary-btn:hover { border-color: var(--gold); color: var(--cream); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 2rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-brand {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 300;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 300;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--gold); }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    @media (max-width: 680px) {
+      .masthead { padding: 1.2rem 1.5rem; }
+      .intro, .flow, .buyin-inner { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .buyin { padding: 4rem 1.5rem; }
+      .step { grid-template-columns: 3.5rem 1fr; gap: 1.2rem; }
+      .step-circle { width: 2.4rem; height: 2.4rem; font-size: 0.85rem; }
+      .step:not(:last-child)::before { left: 1.9rem; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="masthead">
+    <a href="https://aseatatthetable.fun" class="masthead-logo">
+      A Seat at the Table <span>/ The Fans' Network</span>
+    </a>
+  </header>
+
+  <!-- INTRO -->
+  <section class="intro">
+    <p class="intro-label">For Founding Members</p>
+    <h1 class="intro-headline">
+      Here's exactly<br /><em>what we're building.</em>
+    </h1>
+    <p class="intro-body">
+      You claimed a seat. Here's what that means — and what comes next. 
+      This isn't a pitch. It's the full picture. We want your honest reaction 
+      before we go any further at your school.
+    </p>
+    <p class="intro-body">
+      <strong>Read it. Then tell us what you think.</strong>
+    </p>
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- FLOW STEPS -->
+  <section class="flow">
+    <p class="flow-label">The Plan — Step by Step</p>
+
+    <div class="step">
+      <div class="step-num-wrap">
+        <div class="step-circle">1</div>
+      </div>
+      <div class="step-content">
+        <p class="step-tag">The Problem</p>
+        <h2 class="step-title">College sports is being financialized — without you.</h2>
+        <div class="step-body">
+          <p>PE firms and the PE-backed companies they fund now control the multimedia rights at hundreds of college athletic programs. That means the company selling your school's sponsorships, producing its broadcasts, and controlling its brand isn't your school — it's private capital with a return mandate — not a fan in sight.</p>
+          <p>Conference realignment happened the same way. NIL collectives were built by boosters, not fans. The House Settlement restructured revenue sharing without any fan input. <strong>Every major structural change in college athletics over the last five years was made in rooms fans were never in.</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num-wrap">
+        <div class="step-circle">2</div>
+      </div>
+      <div class="step-content">
+        <p class="step-tag">The Platform</p>
+        <h2 class="step-title">XSEN gives fans a home base. It's already built.</h2>
+        <div class="step-body">
+          <p>XSEN — the eXperience Sports and Entertainment Network — is built and running. It's a fan engagement platform with live audio broadcasts, an AI sports companion, video highlights, and real-time game data.</p>
+          <p>OU, Oklahoma State, and Texas are live with full channels. Every other school already has a place on the platform — waiting for the fans who show up. <strong>XSEN is the technology layer. The Fans' Network is the organizing layer.</strong> The platform gives fans something to gather around. The network gives them something to stand for.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num-wrap">
+        <div class="step-circle">3</div>
+      </div>
+      <div class="step-content">
+        <p class="step-tag">The Structure</p>
+        <h2 class="step-title">One organized fan group per school — named, governed, and built by fans.</h2>
+        <div class="step-body">
+          <p>Each school gets its own named, independent fan group — organized, structured, and built by the fans who show up first. Think of it as the official organized fan group for that program, but with real structure and real teeth. For OU fans that might be the Sooner Nation Fan Association. For Georgia fans, something that speaks to their identity. The name belongs to the fans who build it.</p>
+          <p>It's not a booster club. Booster clubs are extensions of the athletic department. These groups are independent — they answer to their members, not the administration. They can advocate, organize, fund, and speak collectively on behalf of the fans who built the program.</p>
+          <p>Each school's fan group operates on The Fans' Network platform and carries its mission. <strong>Founding members are the first group in the room when it's built.</strong> They help set the priorities and the culture of their school's group. That's not something you can join later.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num-wrap">
+        <div class="step-circle">4</div>
+      </div>
+      <div class="step-content">
+        <p class="step-tag">The Pipeline</p>
+        <h2 class="step-title">A direct way for everyday fans to participate in NIL.</h2>
+        <div class="step-body">
+          <p>One of the first things each school's fan group will build is a direct NIL pipeline — a way for fans to financially support their school's athletes without going through an outside collective or booster network.</p>
+          <p>Existing NIL collectives are mostly run by major donors. Everyday fans have no real channel to contribute. <strong>Organized fan groups change that math.</strong> Where NIL collectives already exist, we work with them — routing fan contributions through established, compliant structures. Where they don't, we help build one. Either way, a thousand fans each giving $10 around a big game is a real number — and it gets to the athletes in a transparent, NCAA-compliant way.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num-wrap">
+        <div class="step-circle">5</div>
+      </div>
+      <div class="step-content">
+        <p class="step-tag">The Outcome</p>
+        <h2 class="step-title">Organized fans have leverage. Individual fans don't.</h2>
+        <div class="step-body">
+          <p>A single fan yelling into the void moves nothing. Ten thousand organized fans with a collective voice, a funded association, and a platform are a constituency. Athletic departments notice constituencies. Conferences notice them. The PE firms acquiring rights packages notice them.</p>
+          <p><strong>That's the seat at the table.</strong> Not a courtesy invite — earned leverage, built fan by fan at every school in the country.</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- BUY-IN SECTION -->
+  <section class="buyin">
+    <div class="buyin-inner">
+      <p class="buyin-label">We Want Your Honest Reaction</p>
+      <h2 class="buyin-headline">
+        Does this resonate?<br /><em>Tell us what you think.</em>
+      </h2>
+      <p class="buyin-body">
+        We're not asking you to commit to anything. We're asking whether 
+        this is the right idea, whether the structure makes sense to you as a fan, 
+        and what matters most to your fan base that we haven't addressed.
+      </p>
+      <p class="buyin-body">
+        <strong>Your feedback shapes how we build your school's association.</strong> 
+        Founding members who engage early become the people we talk to 
+        when it's time to formally organize. That's the actual seat at the table.
+      </p>
+
+      <div class="questions">
+        <div class="question">
+          <span class="q-icon">💬</span>
+          <p class="q-text">Does the concept of an organized, independent fan group make sense to you? Is the structure clear?</p>
+        </div>
+        <div class="question">
+          <span class="q-icon">💬</span>
+          <p class="q-text">What would make you actually join and stay active — not just sign up?</p>
+        </div>
+        <div class="question">
+          <span class="q-icon">💬</span>
+          <p class="q-text">What's the one issue at your school that an organized fan group should be fighting for right now — whether that's a revenue sport, an olympic sport, or something else entirely?</p>
+        </div>
+      </div>
+
+      <a href="mailto:kevin@xsen.fun?subject=A Seat at the Table — My Feedback" class="reply-btn">
+        Reply with Your Thoughts
+      </a>
+      <a href="https://xsen.fun" class="secondary-btn">
+        Explore XSEN
+      </a>
+
+      <p style="margin-top:2rem;font-size:0.8rem;color:var(--muted);line-height:1.7;">
+        Replies go directly to Kevin, founder of The Fans' Network. 
+        Every response gets read. Founding members who engage help shape 
+        what their school's association becomes.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <span class="footer-brand">
+      The Fans' Network &mdash; &copy; 2025 Peak Financial Group LLC
+    </span>
+    <nav class="footer-links">
+      <a href="https://thefansnetwork.fun">The Fans' Network</a>
+      <a href="https://xsen.fun">XSEN</a>
+      <a href="https://aseatatthetable.fun">Claim a Seat</a>
+    </nav>
+  </footer>
+
+  <script>
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.step').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
